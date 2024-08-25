@@ -2,16 +2,17 @@ import SimpleLightbox from 'simplelightbox';
 // Додатковий імпорт стилів
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+const listImages = document.querySelector('.list-images');
+
 const gallery = new SimpleLightbox('.list-images a', {
   captionsDelay: 250,
   captionsData: 'alt',
 });
 
 function renderImg(images) {
-  const markup = images.map(img => {
-    listImages.insertAdjacentHTML(
-      'afterbegin',
-      `<li class="photo-item">
+  const markup = images
+    .map(
+      img => `<li class="photo-item">
         <a href="${img.largeImageURL}">
           <div class="wrapper">
             <img class="img-item" src="${img.webformatURL}" alt="${img.tags}"/>
@@ -37,9 +38,15 @@ function renderImg(images) {
 
         </a>
       </li>`
-    );
-  });
-  return markup;
+    )
+    .join('');
+
+  listImages.insertAdjacentHTML('beforeend', markup);
+  gallery.refresh();
 }
 
-export { gallery, renderImg };
+function clearGallery() {
+  listImages.innerHTML = '';
+}
+
+export { gallery, renderImg, clearGallery };
